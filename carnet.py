@@ -296,7 +296,7 @@ def main():
     required_argument = parser.add_argument_group('required arguments')
     required_argument.add_argument('-u', dest='carnet_username', help='Specify your carnet username here', required=True)
     required_argument.add_argument('-p', dest='carnet_password', help='Specify your carnet password here', required=True)
-    required_argument.add_argument('-t', action = 'store', dest='carnet_task', choices = ['info', 'start-charge', 'stop-charge', 'start-climat', 'stop-climat', 'start-window-heating', 'stop-window-heating'], help = 'info shows carnet information (takes long time to generate)', required=True)
+    required_argument.add_argument('-t', action = 'store', dest='carnet_task', choices = ['info', 'start-charge', 'stop-charge', 'start-climat', 'stop-climat', 'start-window-heating', 'stop-window-heating'], required=True)
     parser.add_argument('-w', dest='carnet_wait', action = 'store_true', default = False, help='Specify -w if you want to wait for response on your actions', required=False)
     args = parser.parse_args()
 

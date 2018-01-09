@@ -18,8 +18,6 @@ required arguments:
   -u CARNET_USERNAME    Specify your carnet username here
   -p CARNET_PASSWORD    Specify your carnet password here
   -t {info,start-charge,stop-charge,start-climat,stop-climat,start-window-heating,stop-window-heating}
-                        info shows carnet information (takes long time to
-                        generate)
 ```
 
 ## Usage
