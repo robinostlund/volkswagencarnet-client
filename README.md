@@ -23,38 +23,26 @@ required arguments:
 ```
 
 ## Usage
-Get carnet information
 ```sh
+# Get carnet information
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t info -w
-```
 
-Start charging
-```sh
+# Start charging
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-charge -w
-```
 
-Stop charging
-```sh
+# Stop charging
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-charge -w
-```
 
-Start climat
-```sh
+# Start climat
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-climat -w
-```
 
-Stop climat
-```sh
+# Stop climat
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-climat -w
-```
 
-Start window heating
-```sh
+# Start window heating
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-window-heating -w
-```
 
-Stop window heating
-```sh
+# Stop window heating
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-window-heating -w
 ```
 
