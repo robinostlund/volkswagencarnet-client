@@ -152,20 +152,24 @@ class VWCarnet(object):
         return r.content
 
 
-    def _carnet_retrieve_carnet_info(self):
+    def _carnet_retrieve_carnet_info(self, wait):
         vehicle_data = {}
         vehicle_data_messages = json.loads(self._carnet_post( '/-/msgc/get-new-messages'))
         vehicle_data_location = json.loads(self._carnet_post('/-/cf/get-location'))
-        # request vehicle details
-        self._carnet_post('/-/vsr/request-vsr')
-        vehicle_data_status = json.loads(self._carnet_post('/-/vsr/get-vsr'))
-        counter = 0
-        while vehicle_data_status['vehicleStatusData']['requestStatus'] == 'REQUEST_IN_PROGRESS':
+
+        if wait:
+            # request vehicle details, takes some time to get
+            self._carnet_post('/-/vsr/request-vsr')
             vehicle_data_status = json.loads(self._carnet_post('/-/vsr/get-vsr'))
-            counter +=1
-            time.sleep(1)
-            if counter > self.timeout_counter:
-                break
+            counter = 0
+            while vehicle_data_status['vehicleStatusData']['requestStatus'] == 'REQUEST_IN_PROGRESS':
+                vehicle_data_status = json.loads(self._carnet_post('/-/vsr/get-vsr'))
+                counter +=1
+                time.sleep(1)
+                if counter > self.timeout_counter:
+                    break
+        else:
+            vehicle_data_status = json.loads(self._carnet_post('/-/vsr/get-vsr'))
         vehicle_data_details = json.loads(self._carnet_post('/-/vehicle-info/get-vehicle-details'))
         vehicle_data_emanager = json.loads(self._carnet_post('/-/emanager/get-emanager'))
 
@@ -219,9 +223,22 @@ class VWCarnet(object):
         }
         return json.loads(self._carnet_post_action('/-/emanager/trigger-windowheating', post_data))
 
-    def _carnet_print_carnet_info(self):
-        vehicle_data = self._carnet_retrieve_carnet_info()
+    def _carnet_print_carnet_info(self, wait):
+        vehicle_data = self._carnet_retrieve_carnet_info(wait)
         #pprint.pprint(vehicle_data)
+
+        #try:
+        #    lat_reversed = str(vehicle_data['location']['position']['lat'])[::-1]
+        #    lon_reversed = str(vehicle_data['location']['position']['lng'])[::-1]
+        #    lat = lat_reversed[:6] + "." + lat_reversed[6:]
+        #    lon = lon_reversed[:6] + "." + lon_reversed[6:]
+        #    print(lat)
+        #    print(lon)
+        #    floc = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + str(lat[::-1]) + ',' + str(lon[::-1]))
+        #    print(floc.content)
+        #    loc = json.loads(floc.content)["results"][0]["formatted_address"]
+        #except:
+        #    loc = 'unknown'
 
         print('-- Status --')
         print(' Next service inspection: %s' % vehicle_data['details']['vehicleDetails']['serviceInspectionData'])
@@ -230,6 +247,7 @@ class VWCarnet(object):
         print('-- Location --')
         print(' Latitude: %s' % vehicle_data['location']['position']['lat'])
         print(' Longitude: %s' % vehicle_data['location']['position']['lng'])
+        #print(' Location: %s' % (loc))
         print('-- eManager --')
         print(' Charger max ampere: %sa' % vehicle_data['emanager']['EManager']['rbc']['settings']['chargerMaxCurrent'])
         print(' Battery left: %s%%' % vehicle_data['emanager']['EManager']['rbc']['status']['batteryPercentage'])
@@ -284,7 +302,7 @@ def main():
 
     vw = VWCarnet(args.carnet_username, args.carnet_password)
     if args.carnet_task == 'info':
-        vw._carnet_print_carnet_info()
+        vw._carnet_print_carnet_info(args.carnet_wait)
 
     elif args.carnet_task == 'start-charge':
         resp = vw._carnet_start_charge()

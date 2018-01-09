@@ -25,7 +25,7 @@ required arguments:
 ## Usage
 Get carnet information
 ```sh
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t info
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t info -w
 ```
 
 Start charging
