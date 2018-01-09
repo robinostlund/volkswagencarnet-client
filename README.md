@@ -20,7 +20,7 @@ required arguments:
   -t {info,start-charge,stop-charge,start-climat,stop-climat,start-window-heating,stop-window-heating}
                         info shows carnet information (takes long time to
                         generate)
-``
+```
 
 ## Usage
 Get carnet information
