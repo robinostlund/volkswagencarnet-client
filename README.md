@@ -1,4 +1,4 @@
-# Python Volkswagen Carnet Client
+# Python2 Volkswagen CarNet Client
 ## Information
 This is a python client that connects to Volkswagen Carnet. It allows you to retreive information about your vehicle and also allows you to start charging etc.
 
