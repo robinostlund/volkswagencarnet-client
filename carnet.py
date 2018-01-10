@@ -331,9 +331,7 @@ class VWCarnet(object):
                 print('-- Information --')
                 print(' Task: %s' % (self.carnet_task))
                 print(' Retry: %s/%s' % (retry_counter, self.carnet_retry))
-                if self._carnet_do_action():
-                    break
-                if retry_counter >= int(self.carnet_retry):
+                if self._carnet_do_action() or retry_counter >= int(self.carnet_retry):
                     break
         else:
             self._carnet_do_action()
@@ -353,11 +351,10 @@ class VWCarnet(object):
                 time.sleep(2)
                 continue
             data = json.loads(req.content)
-            if 'status' in data:
-                if data['status'] == 'OK':
-                    location = data["results"][0]["formatted_address"]
-                    location_link = "https://www.google.com/maps/place/?q=place_id:%s" % (data["results"][0]["place_id"])
-                    break
+            if 'status' in data and data['status'] == 'OK':
+                location = data["results"][0]["formatted_address"]
+                location_link = "https://www.google.com/maps/place/?q=place_id:%s" % (data["results"][0]["place_id"])
+                break
 
             time.sleep(2)
             continue
