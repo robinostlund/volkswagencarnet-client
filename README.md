@@ -26,6 +26,7 @@ required arguments:
 ```sh
 export CARNET_USERNAME='my volkswagen carnet username'
 export CARNET_PASSWORD="my volkswagen carnet password'
+
 # Get carnet information
 $ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t info
 # Get carnet information and wait for confirmation from vehicle
