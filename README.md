@@ -76,5 +76,5 @@ $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-window-heating -r 5
 
 
 ## Thanks to
-https://github.com/wez3/volkswagen-carnet-client
-https://github.com/reneboer/python-carnet-client/
+https://github.com/wez3/volkswagen-carnet-client__
+https://github.com/reneboer/python-carnet-client__
