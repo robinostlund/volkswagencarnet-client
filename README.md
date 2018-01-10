@@ -26,24 +26,38 @@ required arguments:
 ```sh
 # Get carnet information
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t info
+# Get carnet information and wait for confirmation from vehicle
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t info -w
 
 # Start charging
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-charge
+# Start charging and wait for confirmation from vehicle
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-charge -w 
 
 # Stop charging
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-charge
+# Stop charging and wait for confirmation from vehicle
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-charge -w 
 
 # Start climat
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-climat
+# Start climat and wait for confirmation from vehicle
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-climat -w
 
 # Stop climat
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-climat
+# Stop climat and wait for confirmation from vehicle
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-climat -w
 
 # Start window heating
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-window-heating
+# Start window heating and wait for confirmation from vehicle
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-window-heating -w
 
 # Stop window heating
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-window-heating
+# Stop window heating and wait for confirmation from vehicle
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-window-heating -w
 ```
 
 
