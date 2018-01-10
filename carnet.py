@@ -353,7 +353,7 @@ class VWCarnet(object):
             data = json.loads(req.content)
             if 'status' in data and data['status'] == 'OK':
                 location = data["results"][0]["formatted_address"]
-                location_link = "https://www.google.com/maps/place/?q=place_id:%s" % (data["results"][0]["place_id"])
+                location_link = "https://maps.google.com/maps?z=12&t=m&q=loc:%s+%s" % (str(lat[::-1]), str(lon[::-1]))
                 break
 
             time.sleep(2)
