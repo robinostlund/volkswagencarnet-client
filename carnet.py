@@ -249,7 +249,7 @@ class VWCarnet(object):
         print(' Charger max ampere: %sa' % vehicle_data['emanager']['EManager']['rbc']['settings']['chargerMaxCurrent'])
         print(' Battery left: %s%%' % vehicle_data['emanager']['EManager']['rbc']['status']['batteryPercentage'])
         print(' External power connected: %s' % vehicle_data['emanager']['EManager']['rbc']['status']['extPowerSupplyState'])
-        print(' Electric range left: %s miles' % vehicle_data['emanager']['EManager']['rbc']['status']['electricRange'])
+        print(' Electric range left: %s km' % (vehicle_data['emanager']['EManager']['rbc']['status']['electricRange'] * 10))
         print(' Charging state: %s' % vehicle_data['emanager']['EManager']['rbc']['status']['chargingState'])
         print(' Charging time left: %sh %sm' % (vehicle_data['emanager']['EManager']['rbc']['status']['chargingRemaningHour'], vehicle_data['emanager']['EManager']['rbc']['status']['chargingRemaningMinute']))
         print(' Climatisation target temperature: %sc'% vehicle_data['emanager']['EManager']['rpc']['settings']['targetTemperature'])
