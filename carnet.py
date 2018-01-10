@@ -14,9 +14,14 @@ import argparse
 from urlparse import urlsplit
 
 class VWCarnet(object):
-    def __init__(self, username, password):
-        self.carnet_username = username
-        self.carnet_password = password
+    def __init__(self, args):
+        self.carnet_username = args.carnet_username
+        self.carnet_password = args.carnet_password
+        self.carnet_retry = args.carnet_retry
+        self.carnet_wait = args.carnet_wait
+        self.carnet_task = args.carnet_task
+        if self.carnet_retry:
+            self.carnet_wait = True
 
         # Fake the VW CarNet mobile app headers
         self.headers = { 'Accept': 'application/json, text/plain, */*', 'Content-Type': 'application/json;charset=UTF-8', 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0.1; D5803 Build/23.5.A.1.291; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/63.0.3239.111 Mobile Safari/537.36' }
@@ -154,12 +159,12 @@ class VWCarnet(object):
         return r.content
 
 
-    def _carnet_retrieve_carnet_info(self, wait):
+    def _carnet_retrieve_carnet_info(self):
         vehicle_data = {}
         vehicle_data_messages = json.loads(self._carnet_post( '/-/msgc/get-new-messages'))
         vehicle_data_location = json.loads(self._carnet_post('/-/cf/get-location'))
 
-        if wait:
+        if self.carnet_wait:
             # request vehicle details, takes some time to get
             self._carnet_post('/-/vsr/request-vsr')
             vehicle_data_status = json.loads(self._carnet_post('/-/vsr/get-vsr'))
@@ -225,8 +230,8 @@ class VWCarnet(object):
         }
         return json.loads(self._carnet_post_action('/-/emanager/trigger-windowheating', post_data))
 
-    def _carnet_print_carnet_info(self, wait):
-        vehicle_data = self._carnet_retrieve_carnet_info(wait)
+    def _carnet_print_carnet_info(self):
+        vehicle_data = self._carnet_retrieve_carnet_info()
         #pprint.pprint(vehicle_data)
 
         #try:
@@ -244,7 +249,7 @@ class VWCarnet(object):
 
         print('-- Status --')
         print(' Next service inspection: %s' % vehicle_data['details']['vehicleDetails']['serviceInspectionData'])
-        print(' Distance: %s' % vehicle_data['details']['vehicleDetails']['distanceCovered'])
+        print(' Distance: %s km' % vehicle_data['details']['vehicleDetails']['distanceCovered'])
         print(' Last connected: %s %s' % (vehicle_data['details']['vehicleDetails']['lastConnectionTimeStamp'][0], vehicle_data['details']['vehicleDetails']['lastConnectionTimeStamp'][1]))
         print('-- Location --')
         print(' Latitude: %s' % vehicle_data['location']['position']['lat'])
@@ -262,35 +267,86 @@ class VWCarnet(object):
         print(' Windowheating state front: %s' % vehicle_data['emanager']['EManager']['rpc']['status']['windowHeatingStateFront'])
         print(' Windowheating state rear: %s' % vehicle_data['emanager']['EManager']['rpc']['status']['windowHeatingStateRear'])
 
-    def _carnet_print_action(self, action, resp):
+    def _carnet_print_action(self, resp):
         print('-- Information --')
-        print(' Action: %s' % (action))
+        print(' Task: %s' % (self.carnet_task))
         if not 'actionNotification' in resp:
             print(' Status: FAILED, %s' % resp)
         else:
-            print(' Status: %s' % resp['actionNotification']['actionState'].lower())
+            print(' Status: %s' % resp['actionNotification']['actionState'])
 
-    def _carnet_print_action_notification_status(self, action):
-        counter = 0
-        while counter < self.timeout_counter:
-            resp = json.loads(self._carnet_post('/-/emanager/get-notifications'))
-            if 'actionNotificationList' in resp:
+    def _carnet_print_action_notification_status(self):
+        if self.carnet_wait:
+            counter = 0
+            while counter < self.timeout_counter:
+                resp = json.loads(self._carnet_post('/-/emanager/get-notifications'))
+                if 'actionNotificationList' in resp:
+                    print('-- Information --')
+                    for notification in resp['actionNotificationList']:
+                        print(' Task: %s' % (self.carnet_task))
+                        print(' Status: %s' % notification['actionState'])
+                        if notification['actionState'] == 'FAILED':
+                            print(' Message: %s, %s' % (notification['errorTitle'], notification['errorMessage']))
+                            return False
+                        if notification['actionState'] == 'SUCCEEDED':
+                            return True
+                time.sleep(1)
+                counter += 1
+
+            print('-- Information --')
+            print(' Task: %s' % (self.carnet_task))
+            print(' Status: ERROR, request timed out')
+            return False
+        return True
+
+    def _carnet_do_action(self):
+        if self.carnet_task == 'info':
+            self._carnet_print_carnet_info()
+            return True
+        elif self.carnet_task == 'start-charge':
+            resp = self._carnet_start_charge()
+            self._carnet_print_action(resp)
+            return self._carnet_print_action_notification_status()
+
+        elif self.carnet_task == 'stop-charge':
+            resp = self._carnet_stop_charge()
+            self._carnet_print_action(resp)
+            return self._carnet_print_action_notification_status()
+
+        elif self.carnet_task == 'start-climat':
+            resp = self._carnet_start_climat()
+            self._carnet_print_action(resp)
+            return self._carnet_print_action_notification_status()
+
+        elif self.carnet_task == 'stop-climat':
+            resp = self._carnet_stop_climat()
+            self._carnet_print_action(resp)
+            return self._carnet_print_action_notification_status()
+
+        elif self.carnet_task == 'start-window-heating':
+            resp = self._carnet_start_window_melt()
+            self._carnet_print_action(resp)
+            return self._carnet_print_action_notification_status()
+
+        elif self.carnet_task == 'stop-window-heating':
+            resp = self._carnet_stop_window_melt()
+            self._carnet_print_action(resp)
+            return self._carnet_print_action_notification_status()
+
+    def _carnet_run_action(self):
+        if self.carnet_retry:
+            retry_counter = 0
+            while True:
+                retry_counter += 1
                 print('-- Information --')
-                for notification in resp['actionNotificationList']:
-                    print(' Action: %s' % (action))
-                    print(' Status: %s' % notification['actionState'].lower())
-                    if notification['actionState'] == 'FAILED':
-                        print(' Message: %s, %s' % (notification['errorTitle'], notification['errorMessage']))
-                        return
-                    if notification['actionState'] == 'SUCCEEDED':
-                        return
-            time.sleep(1)
-            counter += 1
-
-        print('-- Information --')
-        print(' Action: %s' % (action))
-        print(' Status: ERROR, request timed out')
-        return
+                print(' Task: %s' % (self.carnet_task))
+                print(' Retry: %s/%s' % (retry_counter, self.carnet_retry))
+                if self._carnet_do_action():
+                    break
+                if retry_counter >= int(self.carnet_retry):
+                    break
+        else:
+            self._carnet_do_action()
 
 
 def main():
@@ -300,51 +356,11 @@ def main():
     required_argument.add_argument('-p', dest='carnet_password', help='Specify your carnet password here', required=True)
     required_argument.add_argument('-t', action = 'store', dest='carnet_task', choices = ['info', 'start-charge', 'stop-charge', 'start-climat', 'stop-climat', 'start-window-heating', 'stop-window-heating'], required=True)
     parser.add_argument('-w', dest='carnet_wait', action = 'store_true', default = False, help='Specify -w if you want to wait for response on your actions', required=False)
+    parser.add_argument('-r', dest='carnet_retry', action='store', type = int, default=False, help='Specify -r <number of retries> if you want to retry action if it fails', required=False)
     args = parser.parse_args()
 
-    vw = VWCarnet(args.carnet_username, args.carnet_password)
-    if args.carnet_task == 'info':
-        vw._carnet_print_carnet_info(args.carnet_wait)
-
-    elif args.carnet_task == 'start-charge':
-        resp = vw._carnet_start_charge()
-        vw._carnet_print_action('start charging', resp)
-        if args.carnet_wait:
-            vw._carnet_print_action_notification_status('start charging')
-
-    elif args.carnet_task == 'stop-charge':
-        resp = vw._carnet_stop_charge()
-        vw._carnet_print_action('stop charging', resp)
-        if args.carnet_wait:
-            vw._carnet_print_action_notification_status('stop charging')
-
-    elif args.carnet_task == 'start-climat':
-        resp = vw._carnet_start_climat()
-        vw._carnet_print_action('start climat', resp)
-        if args.carnet_wait:
-            vw._carnet_print_action_notification_status('start climat')
-
-    elif args.carnet_task == 'stop-climat':
-        resp = vw._carnet_stop_climat()
-        vw._carnet_print_action('stop climat', resp)
-        if args.carnet_wait:
-            vw._carnet_print_action_notification_status('stop climat')
-
-    elif args.carnet_task == 'start-window-heating':
-        resp = vw._carnet_start_window_melt()
-        vw._carnet_print_action('start window heating', resp)
-        if args.carnet_wait:
-            vw._carnet_print_action_notification_status('start window heating')
-
-    elif args.carnet_task == 'stop-window-heating':
-        resp = vw._carnet_stop_window_melt()
-        vw._carnet_print_action('stop window heating', resp)
-        if args.carnet_wait:
-            vw._carnet_print_action_notification_status('stop window heating')
-    else:
-        sys.exit(1)
-
-
+    vw = VWCarnet(args)
+    vw._carnet_run_action()
 
 
 
