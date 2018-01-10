@@ -24,54 +24,56 @@ required arguments:
 
 ## Usage
 ```sh
+export CARNET_USERNAME='my volkswagen carnet username'
+export CARNET_PASSWORD="my volkswagen carnet password'
 # Get carnet information
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t info
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t info
 # Get carnet information and wait for confirmation from vehicle
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t info -w
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t info -w
 # Get carnet information and wait for confirmation from vehicle and try it for 5 times
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t info -r 5
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t info -r 5
 
 # Start charging
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-charge
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t start-charge
 # Start charging and wait for confirmation from vehicle
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-charge -w 
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t start-charge -w 
 # Start charging and wait for confirmation from vehicle and try it for 5 times
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-charge -r 5
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t start-charge -r 5
 
 # Stop charging
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-charge
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t stop-charge
 # Stop charging and wait for confirmation from vehicle
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-charge -w 
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t stop-charge -w 
 # Stop charging and wait for confirmation from vehicle and try it for 5 times
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-charge -r 5
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t stop-charge -r 5
 
 # Start climat
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-climat
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t start-climat
 # Start climat and wait for confirmation from vehicle
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-climat -w
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t start-climat -w
 # Start climat and wait for confirmation from vehicle and try it for 5 times
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-climat -r 5
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t start-climat -r 5
 
 # Stop climat
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-climat
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t stop-climat
 # Stop climat and wait for confirmation from vehicle
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-climat -w
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t stop-climat -w
 # Stop climat and wait for confirmation from vehicle and try it for 5 times
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-climat -r 5
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t stop-climat -r 5
 
 # Start window heating
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-window-heating
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t start-window-heating
 # Start window heating and wait for confirmation from vehicle
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-window-heating -w
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t start-window-heating -w
 # Start window heating and wait for confirmation from vehicle and try it for 5 times
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-window-heating -r 5
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t start-window-heating -r 5
 
 # Stop window heating
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-window-heating
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t stop-window-heating
 # Stop window heating and wait for confirmation from vehicle
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-window-heating -w
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t stop-window-heating -w
 # Stop window heating and wait for confirmation from vehicle and try it for 5 times
-$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-window-heating -r 5
+$ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t stop-window-heating -r 5
 ```
 
 
