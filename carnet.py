@@ -379,16 +379,6 @@ def main():
     vw._carnet_run_action()
 
 
-
-    #print(vw._carnet_post('/-/msgc/get-new-messages'))
-    #print()
-    #print(vw._carnet_post('/-/emanager/get-notifications'))
-    #print()
-    #print(vw._carnet_post('/-/msgc/get-new-messages'))
-    #print()
-    #print(vw._carnet_post('/-/emanager/get-emanager'))
-
-
 if __name__ == '__main__':
     try:
         main()
