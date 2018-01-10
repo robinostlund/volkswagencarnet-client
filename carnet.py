@@ -1,5 +1,7 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
+#
 # Original source: https://github.com/reneboer/python-carnet-client/
+#
 import re
 import requests
 import json
