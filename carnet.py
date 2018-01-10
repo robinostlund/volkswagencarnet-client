@@ -232,20 +232,7 @@ class VWCarnet(object):
 
     def _carnet_print_carnet_info(self):
         vehicle_data = self._carnet_retrieve_carnet_info()
-        #pprint.pprint(vehicle_data)
-
-        #try:
-        #    lat_reversed = str(vehicle_data['location']['position']['lat'])[::-1]
-        #    lon_reversed = str(vehicle_data['location']['position']['lng'])[::-1]
-        #    lat = lat_reversed[:6] + "." + lat_reversed[6:]
-        #    lon = lon_reversed[:6] + "." + lon_reversed[6:]
-        #    print(lat)
-        #    print(lon)
-        #    floc = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + str(lat[::-1]) + ',' + str(lon[::-1]))
-        #    print(floc.content)
-        #    loc = json.loads(floc.content)["results"][0]["formatted_address"]
-        #except:
-        #    loc = 'unknown'
+        vehicle_located, vehicle_located_link  = self._google_get_location(str(vehicle_data['location']['position']['lng']), str(vehicle_data['location']['position']['lat']))
 
         print('-- Status --')
         print(' Next service inspection: %s' % vehicle_data['details']['vehicleDetails']['serviceInspectionData'])
@@ -254,7 +241,10 @@ class VWCarnet(object):
         print('-- Location --')
         print(' Latitude: %s' % vehicle_data['location']['position']['lat'])
         print(' Longitude: %s' % vehicle_data['location']['position']['lng'])
-        #print(' Location: %s' % (loc))
+        if vehicle_located:
+            print(' Located: %s' % (vehicle_located))
+            if vehicle_located_link:
+                print(' Link: %s' % (vehicle_located_link))
         print('-- eManager --')
         print(' Charger max ampere: %sa' % vehicle_data['emanager']['EManager']['rbc']['settings']['chargerMaxCurrent'])
         print(' Battery left: %s%%' % vehicle_data['emanager']['EManager']['rbc']['status']['batteryPercentage'])
@@ -347,6 +337,38 @@ class VWCarnet(object):
                     break
         else:
             self._carnet_do_action()
+
+    def _google_get_location(self, lng, lat):
+        counter = 0
+        success = False
+        location = False
+        location_link = False
+        while success != True and counter < 3:
+            lat_reversed = str(lat)[::-1]
+            lon_reversed = str(lng)[::-1]
+            lat = lat_reversed[:6] + lat_reversed[6:]
+            lon = lon_reversed[:6] + lon_reversed[6:]
+            try:
+                req = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + str(lat[::-1]) + ',' + str(lon[::-1]))
+            except:
+                time.sleep(2)
+                continue
+            data = json.loads(req.content)
+            if 'status' in data:
+                if data['status'] == 'OK':
+                    print(data["results"][0])
+                    location = data["results"][0]["formatted_address"]
+                    location_link = "https://www.google.com/maps/place/?q=place_id:%s" % (data["results"][0]["place_id"])
+                    success = True
+                else:
+                    time.sleep(2)
+                    continue
+            else:
+                time.sleep(2)
+                continue
+
+
+        return location, location_link
 
 
 def main():
