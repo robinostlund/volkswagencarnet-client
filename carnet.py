@@ -340,10 +340,9 @@ class VWCarnet(object):
 
     def _google_get_location(self, lng, lat):
         counter = 0
-        success = False
         location = False
         location_link = False
-        while success != True and counter < 3:
+        while counter < 3:
             lat_reversed = str(lat)[::-1]
             lon_reversed = str(lng)[::-1]
             lat = lat_reversed[:6] + lat_reversed[6:]
@@ -356,17 +355,12 @@ class VWCarnet(object):
             data = json.loads(req.content)
             if 'status' in data:
                 if data['status'] == 'OK':
-                    print(data["results"][0])
                     location = data["results"][0]["formatted_address"]
                     location_link = "https://www.google.com/maps/place/?q=place_id:%s" % (data["results"][0]["place_id"])
-                    success = True
-                else:
-                    time.sleep(2)
-                    continue
-            else:
-                time.sleep(2)
-                continue
+                    break
 
+            time.sleep(2)
+            continue
 
         return location, location_link
 
