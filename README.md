@@ -28,36 +28,50 @@ required arguments:
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t info
 # Get carnet information and wait for confirmation from vehicle
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t info -w
+# Get carnet information and wait for confirmation from vehicle and try it for 5 times
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t info -r 5
 
 # Start charging
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-charge
 # Start charging and wait for confirmation from vehicle
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-charge -w 
+# Start charging and wait for confirmation from vehicle and try it for 5 times
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-charge -r 5
 
 # Stop charging
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-charge
 # Stop charging and wait for confirmation from vehicle
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-charge -w 
+# Stop charging and wait for confirmation from vehicle and try it for 5 times
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-charge -r 5
 
 # Start climat
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-climat
 # Start climat and wait for confirmation from vehicle
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-climat -w
+# Start climat and wait for confirmation from vehicle and try it for 5 times
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-climat -r 5
 
 # Stop climat
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-climat
 # Stop climat and wait for confirmation from vehicle
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-climat -w
+# Stop climat and wait for confirmation from vehicle and try it for 5 times
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-climat -r 5
 
 # Start window heating
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-window-heating
 # Start window heating and wait for confirmation from vehicle
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-window-heating -w
+# Start window heating and wait for confirmation from vehicle and try it for 5 times
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t start-window-heating -r 5
 
 # Stop window heating
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-window-heating
 # Stop window heating and wait for confirmation from vehicle
 $ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-window-heating -w
+# Stop window heating and wait for confirmation from vehicle and try it for 5 times
+$ carnet.py -u mycarnetuser -p 'mycarnetpassword' -t stop-window-heating -r 5
 ```
 
 
