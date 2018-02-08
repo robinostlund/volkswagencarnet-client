@@ -1,6 +1,12 @@
-# Python2 Volkswagen CarNet Client
+# Python3 Volkswagen CarNet Client
 ## Information
 This is a python client that connects to Volkswagen Carnet. It allows you to retreive information about your vehicle and also allows you to start charging etc.
+
+## Requirements
+It requires volkswagencarnet library that can be installed from pip: 
+```sh 
+pip3 install volkswagencarent
+```
 
 ## Help
 ```sh
@@ -76,7 +82,6 @@ $ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t stop-window-heating -w
 # Stop window heating and wait for confirmation from vehicle and try it for 5 times
 $ carnet.py -u $CARNET_USERNAME -p $CARNET_PASSWORD -t stop-window-heating -r 5
 ```
-
 
 ## Thanks to
 https://github.com/wez3/volkswagen-carnet-client
