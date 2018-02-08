@@ -11,6 +11,8 @@ except ImportError:
     print('Cannot find volkswagencarnet library, pip3 install volkswagencarnet')
     sys.exit(1)
 
+sys.version_info >= (3, 0) or exit('Python 3 required')
+
 class VWCarnet(object):
     def __init__(self, args):
         self.carnet_username = args.carnet_username
