@@ -2,10 +2,17 @@
 ## Information
 This is a python client that connects to Volkswagen Carnet. It allows you to retreive information about your vehicle and also allows you to start charging etc.
 
-## Requirements
+## Installation
 It requires volkswagencarnet library that can be installed from pip: 
 ```sh 
-pip3 install volkswagencarent
+[venv-python3] user@localhost:~
+$ pip install volkswagencarnet
+
+[venv-python3] user@localhost:~
+$ git clone https://github.com/robinostlund/volkswagen-carnet-client.git
+
+[venv-python3] user@localhost:~
+$ volkswagen-carnet-client/carnet-client.py -h
 ```
 
 ## Help

@@ -35,7 +35,6 @@ class VWCarnet(object):
         # we only support 1 vehicle at this time
         self.vehicle = list(vw.vehicles)[0]
 
-
     def _carnet_print_carnet_info(self):
         # status
         output = '-- Status --'
@@ -117,7 +116,6 @@ class VWCarnet(object):
             else:
                 output += '\n Window heater: off'
 
-        # print output
         print(output)
 
     def _carnet_print_action(self, resp):
